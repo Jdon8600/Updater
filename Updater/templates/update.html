@@ -18,14 +18,14 @@
         <label for="N/A">N/A:</label>
         <input type="text" name="N/A" id="N/A", step=".001"><br><br>
 
-        <input type="submit" value="Submit">
+        <input class='btn' type="submit" value="Submit">
     </form>
 
 
     <p>&nbsp;</p>
     <form action="{{ url_for('main.app_callback') }}" method="GET">
         <div style="text-align: center; border: 0px solid">
-            <button type="submit">Back</button>
+            <button class='btn' type="submit">Back</button>
         </div>
     </form>
 </body>

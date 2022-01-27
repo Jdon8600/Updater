@@ -19,7 +19,7 @@
     
     <form action="{{ url_for('main.show_my_projects') }}" method="GET">
         <div style="text-align: center; border: 0px solid">
-          <button name='myProjects'>Show projects</button>
+          <button class='btn' name='myProjects'>Show projects</button>
         </div>
       </form>
 
@@ -34,7 +34,7 @@
 
       <form action="{{ url_for('main.app_refresh_token') }}" method="POST">
         <div style="text-align: center; border: 0px solid">
-            <button type="submit">Refresh Access Token</button>
+            <button class='btn' type="submit">Refresh Access Token</button>
         </div>
         </form>
 
@@ -43,7 +43,7 @@
 
     <form action="{{ url_for('main.logout') }}" method="POST">
         <div style="text-align: center; border: 0px solid">
-            <button type="submit">Logout</button>
+            <button class='btn' type="submit">Logout</button>
         </div>
     </form>
       
