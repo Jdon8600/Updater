@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" action="{{url_for('main.update_ins')}}">
+        <label for="Pass">Pass:</label>
+        <input type="text" name="Pass" id="Pass", step=".001"><br><br>
+
+        <label for="Fail">Fail:</label>
+        <input type="text" name="Fail" id="Fail", step=".001"><br><br>
+
+        <label for="N/A">N/A:</label>
+        <input type="text" name="N/A" id="N/A", step=".001"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+
+    <p>&nbsp;</p>
+    <form action="{{ url_for('main.app_callback') }}" method="GET">
+        <div style="text-align: center; border: 0px solid">
+            <button type="submit">Back</button>
+        </div>
+    </form>
+</body>
+</html>
