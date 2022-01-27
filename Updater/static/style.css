@@ -1,5 +1,7 @@
+
 body {
-    background-color: powderblue;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #fff;
   }
   h1 {
     color: blue;
@@ -7,3 +9,20 @@ body {
   p {
     color: red;
   }
+  .btn {
+    background-color: #0cf;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .btn:hover{
+      background-color:rgb(87, 221, 255) ;
+  }
+  
