@@ -2,27 +2,22 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<style> 
-input[type=submit] {
-  background-color: #1a75ff;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Login Page</title>
 </head>
 <body>
-<form action="{{ url_for('main.app_auth') }}" method="POST">
-  <div style="text-align: center; border: 0px solid">
-    <button class='btn' type="submit">Login to Procore</button>
-  </div>
-</form>
-
-
+    <form action="{{ url_for('main.app_auth') }}" method="POST">
+        <div style="text-align: center; border: 0px solid">
+          <button class='btn' type="submit">Login to Procore</button>
+        </div>
+      </form>
 </body>
 </html>
