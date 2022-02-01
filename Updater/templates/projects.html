@@ -15,8 +15,9 @@
 <body>
     <form method="POST" action="{{url_for('main.show_my_projects')}}">
     <select name="projectName" method="GET" aria-placeholder="Select a Project">
+    <option value="default" disable selected hidden>Select a Project</option>
       {% for names in projectName %}
-      <option value="{{names}}" SELECTED>{{names}}</option>
+      <option value="{{names}}">{{names}}</option>
       {% endfor %}
     </select>
     <input class='btn' type="submit" value= 'submit'>
