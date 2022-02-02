@@ -198,7 +198,7 @@ def app_auth():
     return redirect(make_authorization_url())
 
 
-@bp.route('auth/home', methods=['POST', 'GET'])
+@bp.route('user/home', methods=['POST', 'GET'])
 def app_callback():
     if request.method == "GET":
         if session.get('bool') is False:
@@ -215,7 +215,7 @@ def app_callback():
 # show the projects visible to the user logged in
 
 
-@bp.route('auth/projects', methods=['GET', "POST"])
+@bp.route('user/projects', methods=['GET', "POST"])
 def show_my_projects():
     if request.method == "GET":
         companyID = get_company_id(session.get('access_token'))
@@ -249,7 +249,7 @@ def get_search():
 
 @bp.route('/selectIns', methods=["GET", "POST"])
 def get_inspection():
-    
+    projectName = session.get("projectName")
     access_token = session.get('access_token')
     project_id = session .get('project_id')
     if request.method == "GET":
@@ -286,7 +286,7 @@ def get_inspection():
         session['value_id'] = value_id
         
 
-        return render_template('selection.html', templateName=matching)
+        return render_template('selection.html', templateName=matching, projectName=projectName)
 
     
     value_id = session.get('value_id')

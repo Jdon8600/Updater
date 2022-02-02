@@ -9,6 +9,7 @@
     <title>Template Selection</title>
 </head>
 <body>
+    <h1>Project: {{projectName}}</h1>
     <form method="POST" action="{{url_for('main.get_inspection')}}">
         {% for names in templateName %}
         <input type="checkbox" name="templateName" value="{{names}}">
