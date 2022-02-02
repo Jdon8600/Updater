@@ -1,4 +1,5 @@
 # --------------------------- IMPORTS --------------------------- #
+from asyncio.windows_events import proactor_events
 from datetime import datetime
 import os
 import urllib
@@ -228,6 +229,7 @@ def show_my_projects():
         value_name = [a_name[projectName] for a_name in projectJson]
         return render_template('projects.html', projectName=value_name)
     result = request.form.get("projectName")
+    session["projectName"] = result
     my_json = session.get('project_json')
     result_index = next((index for (index, d) in enumerate(
         my_json) if d['name'] == result), None)
@@ -237,11 +239,12 @@ def show_my_projects():
     return redirect('/search')
 @bp.route('/search', methods=["GET", "POST"])
 def get_search():
+    projectName = session.get('projectName')
     if request.method == "POST":
         result = request.form.get("Search")
         session['search_result'] = result.lower()
         return redirect('/selectIns')
-    return render_template('search.html')
+    return render_template('search.html', projectName=projectName)
 
 
 @bp.route('/selectIns', methods=["GET", "POST"])
