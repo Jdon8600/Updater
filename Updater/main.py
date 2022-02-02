@@ -271,6 +271,7 @@ def get_inspection():
             else:
                 continue
         matching = [s for s in value_node if search_result in s]
+        print(check_json)
         for i in range(len(value_location)):
             if(counter < len(matching)):
                 if value_location[i] != None and value_location[i]['node_name']  == matching[counter]:
