@@ -10,10 +10,19 @@
 </head>
 <body>
     <h1>Project: {{projectName}}</h1>
+    <script language="JavaScript">
+        function toggle(source){
+            checkboxes = document.getElementsByName('templateName');
+            for(let i = 0; i < checkboxes.length; ++i){
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
     <form method="POST" action="{{url_for('main.get_inspection')}}">
+        <input type="checkbox" onClick="toggle(this)"/>Select All<br/>
         {% for names in templateName %}
         <input type="checkbox" name="templateName" value="{{names}}">
-        <label>{{names}}</label><br><br>
+        <label>{{names}}</label><br>
         {% endfor %}
     <input class='btn' type="submit" value= 'submit'>
     </form>

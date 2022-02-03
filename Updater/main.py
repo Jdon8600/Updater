@@ -122,11 +122,18 @@ def get_company_id(access_token):
     session['company_id'] = company_json[0]['id']
     return company_json[0]['id']
 
+def get_checklist_template(access_token, project_id):
+    headers = {"Authorization": "Bearer " + access_token}
+    response = requests.get(
+        BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/list_templates", headers=headers)
+    checklist_template = response.json()
+    return checklist_template
+
 
 def get_checklist_json(access_token, project_id, filters=[]):
     headers = {"Authorization": "Bearer " + access_token}
     response = requests.get(
-        BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/lists?filters%5Blocation_id%5D={filters}", headers=headers)
+        BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/lists?per_page=4000&filters%5Blocation_id%5D={filters}", headers=headers)
     checklist_json = response.json()
     return checklist_json
 
@@ -170,11 +177,9 @@ def callback():
     if request.method == "GET":
         if session.get('bool') is False:
             code = request.args.get('code')
-            access_token, refresh_token, created_at = get_token(code)
+            access_token, refresh_token = get_token(code)
             session['access_token'] = access_token
             session['refresh_token'] = refresh_token
-            session['created_at'] = update_date(created_at)
-            session['expires_at'] = update_expire(created_at)
             session['bool'] = True
  
         return render_template('home.html')
@@ -218,6 +223,7 @@ def app_callback():
 @bp.route('user/projects', methods=['GET', "POST"])
 def show_my_projects():
     if request.method == "GET":
+        
         companyID = get_company_id(session.get('access_token'))
         data = {"company_id": companyID}
         headers = {"Authorization": "Bearer " + session.get('access_token')}
@@ -271,7 +277,7 @@ def get_inspection():
             else:
                 continue
         matching = [s for s in value_node if search_result in s]
-        print(check_json)
+        
         for i in range(len(value_location)):
             if(counter < len(matching)):
                 if value_location[i] != None and value_location[i]['node_name']  == matching[counter]:
@@ -297,7 +303,6 @@ def get_inspection():
     for i in range(len(loc_checklist)):
         if loc_checklist[i] != None:
             loc_checklist[i]['location']['node_name'] = loc_checklist[i]['location']['node_name'].lower()
-    print(len(loc_checklist))
     for i in range(len(loc_checklist)):
         if(counter < len(result)):
             if loc_checklist[i]['location']['node_name'] == result[counter]:
@@ -357,6 +362,7 @@ def update_ins():
                         BASE_URL+f'/rest/v1.0/checklist/lists/{list_id[i]}/items/{item_id[target-1]}', data=json_data, headers=headers)
 
                     print(resp.status_code)
+
 
             if result2[0] != '':
                 for num in result2:
@@ -438,9 +444,7 @@ def app_refresh_token():
     response_json = response.json()
     session['access_token'] = response_json["access_token"]
     session['refresh_token'] = response_json["refresh_token"]
-    session['created_at'] = update_date(response_json["created_at"])
-    session['expires_at'] = update_expire(response_json["created_at"])
-    return redirect('auth/home')
+    return redirect('user/home')
 
 
 @bp.route('/logout', methods=["POST"])
