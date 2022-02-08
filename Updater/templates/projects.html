@@ -13,6 +13,10 @@
     <title>Projects</title>
 </head>
 <body>
+    <div style="text-align: right;">
+        <h3>{{user}}</h3>
+    </div>
+    
     <form method="POST" action="{{url_for('main.show_my_projects')}}">
     <select name="projectName" method="GET" aria-placeholder="Select a Project">
     <option value="default" disable selected hidden>Select a Project</option>

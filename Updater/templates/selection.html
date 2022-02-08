@@ -8,8 +8,12 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>Template Selection</title>
 </head>
+
 <body>
     <h1>Project: {{projectName}}</h1>
+    <div style="text-align: right;">
+        <h3>{{user}}</h3>
+    </div>
     <script language="JavaScript">
         function toggle(source){
             checkboxes = document.getElementsByName('templateName');

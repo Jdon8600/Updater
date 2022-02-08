@@ -170,7 +170,7 @@ def get_me(access_token):
     headers = {"Authorization": "Bearer " + access_token}
     response = requests.get(BASE_URL+"/rest/v1.0/me", headers=headers)
     me_json = response.json()
-    return me_json['login'], me_json['id']
+    return me_json['login']
 
 
 def callback():
@@ -214,8 +214,10 @@ def app_callback():
             session['created_at'] = update_date(created_at)
             session['expires_at'] = update_expire(created_at)
             session['bool'] = True
+    login = get_me(session.get('access_token'))
+    session['login'] = login
 
-    return render_template('home.html')
+    return render_template('home.html', user=login)
 
 # show the projects visible to the user logged in
 
@@ -223,7 +225,6 @@ def app_callback():
 @bp.route('user/projects', methods=['GET', "POST"])
 def show_my_projects():
     if request.method == "GET":
-        
         companyID = get_company_id(session.get('access_token'))
         data = {"company_id": companyID}
         headers = {"Authorization": "Bearer " + session.get('access_token')}
@@ -233,7 +234,7 @@ def show_my_projects():
         session['project_json'] = projectJson
         projectName = "name"
         value_name = [a_name[projectName] for a_name in projectJson]
-        return render_template('projects.html', projectName=value_name)
+        return render_template('projects.html', projectName=value_name, user=session.get('login'))
     result = request.form.get("projectName")
     session["projectName"] = result
     my_json = session.get('project_json')
@@ -250,7 +251,7 @@ def get_search():
         result = request.form.get("Search")
         session['search_result'] = result.lower()
         return redirect('/selectIns')
-    return render_template('search.html', projectName=projectName)
+    return render_template('search.html', projectName=projectName, user=session.get('login'))
 
 
 @bp.route('/selectIns', methods=["GET", "POST"])
@@ -292,7 +293,7 @@ def get_inspection():
         session['value_id'] = value_id
         
 
-        return render_template('selection.html', templateName=matching, projectName=projectName)
+        return render_template('selection.html', templateName=matching, projectName=projectName, user=session.get('login'))
 
     
     value_id = session.get('value_id')
@@ -417,14 +418,6 @@ def update_ins():
 
         return resp.json()
     return render_template("update.html")
-
-
-@bp.route('auth/me', methods=["GET"])
-def app_page_me():
-    [login, my_id] = get_me(session.get('access_token'))
-    html = render_template('me.html')
-    return html % (my_id, login)
-
 
 @bp.route('/refreshToken', methods=['POST'])
 def app_refresh_token():

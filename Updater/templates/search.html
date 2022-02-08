@@ -10,6 +10,9 @@
 </head>
 <body>
     <h1>Project: {{projectName}}</h1>
+    <div style="text-align: right;">
+        <h3>{{user}}</h3>
+    </div>
     <form method="POST" action="{{url_for('main.get_search')}}">
     <label for="search">Search by Location Tag: </label>
     <input type="text" name="Search" id="Search", step=".001"><br><br>

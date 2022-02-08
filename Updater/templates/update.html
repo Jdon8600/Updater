@@ -9,6 +9,9 @@
     <title>Document</title>
 </head>
 <body>
+    <div style="text-align: right;">
+        <h3>{{user}}</h3>
+    </div>
     <form method="POST" action="{{url_for('main.update_ins')}}">
         <label for="Pass">Pass:</label>
         <input type="text" name="Pass" id="Pass", step=".001"><br><br>
