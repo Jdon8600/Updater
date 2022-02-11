@@ -3,7 +3,8 @@ from asyncio.windows_events import proactor_events
 from datetime import datetime
 import os
 import urllib
-from flask import Blueprint, request, session, redirect, render_template
+from flask import Blueprint, request, session, redirect, render_template, flash
+from markupsafe import re
 import requests
 import requests.auth
 from dotenv import load_dotenv
@@ -122,13 +123,13 @@ def get_company_id(access_token):
     session['company_id'] = company_json[0]['id']
     return company_json[0]['id']
 
-def get_checklist_template(access_token, project_id):
+"""def get_checklist_template(access_token, project_id):
     headers = {"Authorization": "Bearer " + access_token}
     response = requests.get(
         BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/list_templates", headers=headers)
     checklist_template = response.json()
     return checklist_template
-
+"""
 
 def get_checklist_json(access_token, project_id, filters=[]):
     headers = {"Authorization": "Bearer " + access_token}
@@ -153,6 +154,7 @@ def get_item_id(list_id):
     section_id = [a_sID["section_id"] for a_sID in item_json]
     session['itemPos'] = value_pos
     session['section_id'] = section_id
+    print(section_id)
   
     return value_id
  
@@ -330,6 +332,9 @@ def update_ins():
         result3 = statNa.split(',')
         access_token = session.get('access_token')
         project_id = int(session.get("project_id"))
+
+        for i in result1:
+            i.split('.')
         
         
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
@@ -416,7 +421,7 @@ def update_ins():
 
 
 
-        return resp.json()
+        return flash()
     return render_template("update.html")
 
 @bp.route('/refreshToken', methods=['POST'])
