@@ -157,7 +157,33 @@ def get_item_id(list_id):
     print(section_id)
   
     return value_id
- 
+
+def update(result1, project_id, section_id, list_id, item_id, headers):
+
+    if result1[0] != '':
+                    for num in result1:
+                        target_pos = num
+                        target = int(target_pos)
+                        
+                        data = {
+                                "project_id": project_id,
+                                "section_id": section_id[target-1],
+                                "item": {
+                                    "position": target,
+                                    "status": "yes",
+                                    "response_id": None,
+                                    "item_attachments_attributes": [
+                                
+                                    ]
+                                },
+                                "attachments": [
+                                ]
+                            }
+                        json_data = json.dumps(data)
+                        resp = requests.patch(
+                            BASE_URL+f'/rest/v1.0/checklist/lists/{list_id}/items/{item_id[target-1]}', data=json_data, headers=headers)
+
+                        print(resp.status_code)
 
 def get_me(access_token):
     '''
@@ -333,9 +359,7 @@ def update_ins():
         access_token = session.get('access_token')
         project_id = int(session.get("project_id"))
 
-        for i in result1:
-            i.split('.')
-        
+    
         
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
         }
@@ -343,81 +367,9 @@ def update_ins():
             item_id = get_item_id(list_id[i])
             section_id = session.get('section_id')
             
-        
-            if result1[0] != '':
-                for num in result1:
-                    target_pos = num
-                    target = int(target_pos)
-                    
-                    data = {
-                            "project_id": project_id,
-                            "section_id": section_id[target-1],
-                            "item": {
-                                "position": target,
-                                "status": "yes",
-                                "response_id": None,
-                                "item_attachments_attributes": [
-                            
-                                ]
-                            },
-                            "attachments": [
-                            ]
-                        }
-                    json_data = json.dumps(data)
-                    resp = requests.patch(
-                        BASE_URL+f'/rest/v1.0/checklist/lists/{list_id[i]}/items/{item_id[target-1]}', data=json_data, headers=headers)
-
-                    print(resp.status_code)
-
-
-            if result2[0] != '':
-                for num in result2:
-                    target_pos = num
-                    target = int(target_pos)
-                    
-                    data = {
-                            "project_id": project_id,
-                            "section_id": section_id[target-1],
-                            "item": {
-                                "position": target,
-                                "status": "no",
-                                "response_id": None,
-                                "item_attachments_attributes": [
-                            
-                                ]
-                            },
-                            "attachments": [
-                            ]
-                        }
-                    json_data = json.dumps(data)
-                    resp = requests.patch(
-                        BASE_URL+f'/rest/v1.0/checklist/lists/{list_id[i]}/items/{item_id[target-1]}', data=json_data, headers=headers)
-
-                    print(resp.status_code)
-            if result3[0] != '':
-                for num in result3:
-                    target_pos = num
-                    target = int(target_pos)
-                    
-                    data = {
-                            "project_id": project_id,
-                            "section_id": section_id[target-1],
-                            "item": {
-                                "position": target,
-                                "status": "n/a",
-                                "response_id": None,
-                                "item_attachments_attributes": [
-                            
-                                ]
-                            },
-                            "attachments": [
-                            ]
-                        }
-                    json_data = json.dumps(data)
-                    resp = requests.patch(
-                        BASE_URL+f'/rest/v1.0/checklist/lists/{list_id[i]}/items/{item_id[target-1]}', data=json_data, headers=headers)
-
-                    print(resp.status_code)
+            update(result1, project_id, section_id, list_id[i], item_id, headers)
+            update(result2, project_id, section_id, list_id[i], item_id, headers)
+            update(result3, project_id, section_id, list_id[i], item_id, headers)
 
 
 
