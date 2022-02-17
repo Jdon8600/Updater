@@ -154,7 +154,6 @@ def get_item_id(list_id):
     section_id = [a_sID["section_id"] for a_sID in item_json]
     session['itemPos'] = value_pos
     session['section_id'] = section_id
-    print(section_id)
   
     return value_id
 
@@ -254,7 +253,7 @@ def app_callback():
 def show_my_projects():
     if request.method == "GET":
         companyID = get_company_id(session.get('access_token'))
-        data = {"company_id": companyID}
+        data = {"company_id": companyID} 
         headers = {"Authorization": "Bearer " + session.get('access_token')}
         response = requests.get(
             BASE_URL + '/rest/v1.0/projects', data=data, headers=headers)
@@ -363,6 +362,7 @@ def update_ins():
         
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
         }
+
         for i in range(len(list_id)):
             item_id = get_item_id(list_id[i])
             section_id = session.get('section_id')
@@ -371,9 +371,9 @@ def update_ins():
             update(result2, project_id, section_id, list_id[i], item_id, headers)
             update(result3, project_id, section_id, list_id[i], item_id, headers)
 
-
-
-        return flash()
+    
+        
+        return render_template("fin.html")
     return render_template("update.html")
 
 @bp.route('/refreshToken', methods=['POST'])

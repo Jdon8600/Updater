@@ -11,6 +11,7 @@
 <body>
     <div style="text-align: right;">
         <h3>{{user}}</h3>
+    
     </div>
     <form method="POST" action="{{url_for('main.update_ins')}}">
         <label for="Pass">Pass:</label>
@@ -24,7 +25,6 @@
 
         <input class='btn' type="submit" value="Submit">
     </form>
-
 
     <p>&nbsp;</p>
     <form action="{{ url_for('main.app_callback') }}" method="GET">

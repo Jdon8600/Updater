@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Complete</title>
+</head>
+<body>
+    <h2>Update Successfull!</h2>
+    <p>&nbsp;</p>
+<form action="{{ url_for('main.show_my_projects') }}" method="GET">
+    <div style="text-align: center; border: 0px solid">
+        <button class='btn' type="submit">Update More Inspections</button>
+    </div>
+</form>
+
+<form action="{{ url_for('main.app_callback') }}" method="GET">
+    <div style="text-align: center; border: 0px solid">
+        <button class='btn' type="submit">Home</button>
+    </div>
+</form>
+</body>
+</html>
