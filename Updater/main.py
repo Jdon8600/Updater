@@ -148,6 +148,7 @@ def get_item_id(list_id):
         BASE_URL+f"/rest/v1.0/checklist/lists/{list_id}", data=data, headers=headers)
     to_json = response.json()
     section_json = to_json['sections']
+    
     item_json = section_json[0]['items']
     value_id = [a_id['id'] for a_id in item_json]
     value_pos = [a_pos['position'] for a_pos in item_json]
@@ -157,7 +158,7 @@ def get_item_id(list_id):
   
     return value_id
 
-def update(result1, project_id, section_id, list_id, item_id, headers):
+def update(result1, project_id, section_id, list_id, item_id, status, headers):
 
     if result1[0] != '':
                     for num in result1:
@@ -169,7 +170,7 @@ def update(result1, project_id, section_id, list_id, item_id, headers):
                                 "section_id": section_id[target-1],
                                 "item": {
                                     "position": target,
-                                    "status": "yes",
+                                    "status": status,
                                     "response_id": None,
                                     "item_attachments_attributes": [
                                 
@@ -357,7 +358,9 @@ def update_ins():
         result3 = statNa.split(',')
         access_token = session.get('access_token')
         project_id = int(session.get("project_id"))
-
+        Pass = "yes"
+        Fail = "no"
+        Not_A = "n/a"
     
         
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
@@ -367,9 +370,9 @@ def update_ins():
             item_id = get_item_id(list_id[i])
             section_id = session.get('section_id')
             
-            update(result1, project_id, section_id, list_id[i], item_id, headers)
-            update(result2, project_id, section_id, list_id[i], item_id, headers)
-            update(result3, project_id, section_id, list_id[i], item_id, headers)
+            update(result1, project_id, section_id, list_id[i], item_id, Pass, headers)
+            update(result2, project_id, section_id, list_id[i], item_id, Fail, headers)
+            update(result3, project_id, section_id, list_id[i], item_id, Not_A, headers)
 
     
         
