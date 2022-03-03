@@ -123,20 +123,15 @@ def get_company_id(access_token):
     session['company_id'] = company_json[0]['id']
     return company_json[0]['id']
 
-"""def get_checklist_template(access_token, project_id):
-    headers = {"Authorization": "Bearer " + access_token}
-    response = requests.get(
-        BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/list_templates", headers=headers)
-    checklist_template = response.json()
-    return checklist_template
-"""
-
 def get_checklist_json(access_token, project_id, filters=[]):
+    """
+    Gets checklist information
+    """
     headers = {"Authorization": "Bearer " + access_token}
     response = requests.get(
         BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/lists?per_page=4000&filters%5Blocation_id%5D={filters}", headers=headers)
-    checklist_json = response.json()
-    return checklist_json
+    response = response.json()
+    return response
 
 
 def getSections(list_id):
@@ -149,7 +144,6 @@ def getSections(list_id):
     to_json = response.json()
     section_json = to_json['sections']
     session['sections'] = section_json
-    print(section_json)
     
     return
 
@@ -161,14 +155,16 @@ def get_item_id(index):
     section_id = [a_sID["section_id"] for a_sID in item_json]
     session['itemPos'] = value_pos
     session['section_id'] = section_id
+    
     return value_id, section_id
 
-def update(result1, project_id, list_id, status, headers):
+def update(result, project_id, list_id, status, headers):
 
     
-    if result1[0] != '':
-        for num in result1:
+    if result[0] != '':
+        for num in result:
             target_pos = num.split('.')
+            print(target_pos)
             item_id, section_id = get_item_id(int(target_pos[0]) - 1)
             target = int(target_pos[1])
                         
@@ -296,22 +292,22 @@ def get_inspection():
         value_location = [a_name[template_location] for a_name in check_json]
         session['value_location'] = value_location
         value_node = []
-        value_id = []
+        loc_id = []
         counter = 0
         for i in range(len(value_location)):
             if value_location[i] != None:
-                value_location[i]['node_name'] = value_location[i]['node_name'].lower()
+                value_location[i]['name'] = value_location[i]['name'].lower()
         for i in range(len(value_location)):
             if value_location[i] != None:
-                value_node.append(value_location[i]['node_name'])
+                value_node.append(value_location[i]['name'])
             else:
                 continue
         matching = [s for s in value_node if search_result in s]
         
         for i in range(len(value_location)):
             if(counter < len(matching)):
-                if value_location[i] != None and value_location[i]['node_name']  == matching[counter]:
-                    value_id.append(value_location[i]['id'])
+                if value_location[i] != None and value_location[i]['name']  == matching[counter]:
+                    loc_id.append(value_location[i]['id'])
                     counter += 1
                 else:
                     continue
@@ -319,23 +315,24 @@ def get_inspection():
             if counter == len(value_location):
                 counter = 0
 
-        session['value_id'] = value_id
+        session['loc_id'] = loc_id
         
 
         return render_template('selection.html', templateName=matching, projectName=projectName, user=session.get('login'))
 
     
-    value_id = session.get('value_id')
-    loc_checklist = get_checklist_json(access_token, project_id, value_id)
+    loc_id = session.get('loc_id')
+    print(loc_id)
+    loc_checklist = get_checklist_json(access_token, project_id, loc_id)
     result = request.form.getlist('templateName')
     list_id = []
     counter = 0
     for i in range(len(loc_checklist)):
         if loc_checklist[i] != None:
-            loc_checklist[i]['location']['node_name'] = loc_checklist[i]['location']['node_name'].lower()
+            loc_checklist[i]['location']['name'] = loc_checklist[i]['location']['name'].lower()
     for i in range(len(loc_checklist)):
         if(counter < len(result)):
-            if loc_checklist[i]['location']['node_name'] == result[counter]:
+            if loc_checklist[i]['location']['name'] == result[counter]:
                 list_id.append(loc_checklist[i]['id'])
                 counter += 1
             else:
@@ -362,21 +359,15 @@ def update_ins():
         Pass = "yes"
         Fail = "no"
         Not_A = "n/a"
-    
-        
+        print(list_id)
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
         }
 
         for i in range(len(list_id)):
-            item_id = getSections(list_id[i])
-            section_id = session.get('section_id')
-            
+            getSections(list_id[i])
             update(result1, project_id, list_id[i], Pass, headers)
             update(result2, project_id, list_id[i], Fail, headers)
             update(result3, project_id, list_id[i], Not_A, headers)
-
-    
-        
         return render_template("fin.html")
     return render_template("update.html")
 
