@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     
-    <title>Home Page</title>
+    <title>Home</title>
 </head>
 <body>
-    
+    <div class="topnav">
+        <a class='ProjName' href="{{ url_for('main.app_callback') }}">Inspections Updater</a>
+        <a class="logout" method="POST" href="{{ url_for('main.logout') }}">Logout</a>
+        <h3 class="user">{{user}}</h3>
+    </div>
     <h1>Inspections Updater</h1>
     <div style="text-align: right;">
         <h3>{{user}}</h3>

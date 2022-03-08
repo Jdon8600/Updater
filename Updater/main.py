@@ -1,10 +1,8 @@
 # --------------------------- IMPORTS --------------------------- #
-from asyncio.windows_events import proactor_events
 from datetime import datetime
 import os
 import urllib
-from flask import Blueprint, request, session, redirect, render_template, flash
-from markupsafe import re
+from flask import Blueprint, request, session, redirect, render_template
 import requests
 import requests.auth
 from dotenv import load_dotenv
