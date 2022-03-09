@@ -14,9 +14,9 @@
         <form action="{{ url_for('main.logout') }}" method="POST">
             <button class='logout' type="submit">Logout</button>
         </form>
-        <h3 class="user">{{user}}</h3>
+        <p class="user">{{user}}</p>
     </div>
-    
+    <p>&nbsp;</p>
     <form method="POST" action="{{url_for('main.update_ins')}}">
         <label for="Pass">Pass:</label>
         <input type="text" name="Pass" id="Pass", step=".001"><br><br>
@@ -31,7 +31,7 @@
     </form>
 
     <p>&nbsp;</p>
-    <form action="{{ url_for('main.app_callback') }}" method="GET">
+    <form action="{{url_for('main.get_inspection')}}" method="GET">
         <div style="text-align: center; border: 0px solid">
             <button class='btn' type="submit">Back</button>
         </div>
