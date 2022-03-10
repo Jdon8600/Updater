@@ -162,7 +162,7 @@ def update(result, project_id, list_id, status, headers):
     if result[0] != '':
         for num in result:
             target_pos = num.split('.')
-            print(target_pos)
+            
             item_id, section_id = get_item_id(int(target_pos[0]) - 1)
             target = int(target_pos[1])
                         
@@ -320,7 +320,7 @@ def get_inspection():
 
     
     loc_id = session.get('loc_id')
-    print(loc_id)
+    
     loc_checklist = get_checklist_json(access_token, project_id, loc_id)
     result = request.form.getlist('templateName')
     list_id = []
@@ -357,7 +357,7 @@ def update_ins():
         Pass = "yes"
         Fail = "no"
         Not_A = "n/a"
-        print(list_id)
+
         headers = {"Authorization": "Bearer " + access_token, 'content-type': 'application/json'
         }
 
