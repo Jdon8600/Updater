@@ -170,7 +170,7 @@ def update(result, project_id, list_id, status, headers):
                     "project_id": project_id,
                     "section_id": section_id[target-1],
                     "item": {
-                                    
+
                         "status": status,
                         },
                 }
