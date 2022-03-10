@@ -320,7 +320,7 @@ def get_inspection():
 
     
     loc_id = session.get('loc_id')
-    
+
     loc_checklist = get_checklist_json(access_token, project_id, loc_id)
     result = request.form.getlist('templateName')
     list_id = []
