@@ -157,28 +157,26 @@ def get_item_id(index):
     return value_id, section_id
 
 def update(result, project_id, list_id, status, headers):
-
-    
-    if result[0] != '':
-        for num in result:
-            target_pos = num.split('.')
+    for i in range(len(result)):
+        if result[i] == '':
+            continue
+        target_pos = result[i].split('.')
             
-            item_id, section_id = get_item_id(int(target_pos[0]) - 1)
-            target = int(target_pos[1])
+        item_id, section_id = get_item_id(int(target_pos[0]) - 1)
+        target = int(target_pos[1])
                         
-            data = {
-                    "project_id": project_id,
-                    "section_id": section_id[target-1],
-                    "item": {
+        data = {
+                "project_id": project_id,
+                "section_id": section_id[target-1],
+                "item": {
+                    "status": status,
+                    },
+            }
+        json_data = json.dumps(data)
+        resp = requests.patch(
+            BASE_URL+f'/rest/v1.0/checklist/lists/{list_id}/items/{item_id[target-1]}', data=json_data, headers=headers)
 
-                        "status": status,
-                        },
-                }
-            json_data = json.dumps(data)
-            resp = requests.patch(
-                BASE_URL+f'/rest/v1.0/checklist/lists/{list_id}/items/{item_id[target-1]}', data=json_data, headers=headers)
-
-            print(resp.status_code)
+        print(resp.status_code)
 
 def get_me(access_token):
     '''
