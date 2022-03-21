@@ -30,7 +30,7 @@
         <input type="checkbox" onClick="toggle(this)"/>Select All<br/>
         {% for names in templateName %}
         <input type="checkbox" name="templateName" value="{{names}}">
-        <label>{{names}}</label><br>
+        <label class="out">{{names}}</label><br>
         {% endfor %}
     <input class='btn' type="submit" value= 'submit'>
     </form>

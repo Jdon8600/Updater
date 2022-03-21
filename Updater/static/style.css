@@ -67,5 +67,10 @@ body {
   .btn:hover{
       background-color:rgb(87, 221, 255) ;
   }
+
+  .out{
+    color : black;
+    font-weight: 700;
+  }
   
   
