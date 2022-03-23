@@ -121,10 +121,15 @@ def get_company_id(access_token):
     session['company_id'] = company_json[0]['id']
     return company_json[0]['id']
 
+"""
+DESCRIPTION:
+    Gets checklist information for a specified project and returns a jsonified response.
+Inputs:
+    access_token, project_id, filter=[]
+Outputs:
+    response
+"""
 def get_checklist_json(access_token, project_id, filters=[]):
-    """
-    Gets checklist information
-    """
     headers = {"Authorization": "Bearer " + access_token}
     response = requests.get(
         BASE_URL+f"/rest/v1.0/projects/{project_id}/checklist/lists?per_page=4000&filters%5Blocation_id%5D={filters}", headers=headers)
@@ -145,6 +150,14 @@ def getSections(list_id):
     
     return
 
+"""
+DESCRIPTION:
+    Gets individual item_ids for a specific inspection sheet.
+Inputs:
+    index(of each section in given inspection)
+Outputs:
+    value_id, section_id
+"""
 def get_item_id(index):
     section_json = session.get('sections')
     item_json = section_json[index]['items']
@@ -156,6 +169,14 @@ def get_item_id(index):
     
     return value_id, section_id
 
+"""
+DESCRIPTION:
+    Updates each item in a checklist based on user input
+Inputs:
+    item number(user input), project_id, list_id, status of item(pass/fail/na), headers
+Outputs:
+    No outputs. Directly updates procore according to user inputs.
+"""
 def update(result, project_id, list_id, status, headers):
     for i in range(len(result)):
         if result[i] == '':
