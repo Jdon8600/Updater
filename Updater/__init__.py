@@ -9,7 +9,7 @@ from flask import send_from_directory
 
 def create_app():
     # create the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
 
     app.register_blueprint(main.bp)
     @app.route('/')
@@ -19,5 +19,6 @@ def create_app():
     def favicon():
         return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
+                            
 
     return app
