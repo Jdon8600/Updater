@@ -2,11 +2,30 @@
 from datetime import datetime
 import os
 import urllib
-from flask import Blueprint, request, session, redirect, render_template
+from flask import Flask,Blueprint, request, session, redirect, render_template
 import requests
 import requests.auth
 from dotenv import load_dotenv
+from flask import send_from_directory
 import json
+
+def create_app():
+    app = Flask(__name__)
+
+    @app.route('/')
+    def login():
+        return redirect('/auth')
+
+    @app.route('/favicon.ico')
+    def favicon():
+        return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run()    
 
 
 session = {}
@@ -229,23 +248,22 @@ def callback():
 #-------------------------------------------------App ROUTES-------------------------------------------------------------------------------#
 
 
-bp = Blueprint('main', __name__, url_prefix='/')
-bp.secret_key = gen_secret_key()
+app.secret_key = gen_secret_key()
 
 
-@bp.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def app_homepage():
     return render_template('auth/login.html')
 
 # authenticates user via procore
 
 
-@bp.route('/get_auth', methods=['POST'])
+@app.route('/get_auth', methods=['POST'])
 def app_auth():
     return redirect(make_authorization_url())
 
 
-@bp.route('user/home', methods=['POST', 'GET'])
+@app.route('user/home', methods=['POST', 'GET'])
 def app_callback():
     if request.method == "GET":
         if session.get('bool') is False:
@@ -264,7 +282,7 @@ def app_callback():
 # show the projects visible to the user logged in
 
 
-@bp.route('user/projects', methods=['GET', "POST"])
+@app.route('user/projects', methods=['GET', "POST"])
 def show_my_projects():
     if request.method == "GET":
         companyID = get_company_id(session.get('access_token'))
@@ -286,7 +304,7 @@ def show_my_projects():
     session['project_id'] = project_id
 
     return redirect('/search')
-@bp.route('/search', methods=["GET", "POST"])
+@app.route('/search', methods=["GET", "POST"])
 def get_search():
     projectName = session.get('projectName')
     if request.method == "POST":
@@ -296,7 +314,7 @@ def get_search():
     return render_template('search.html', projectName=projectName, user=session.get('login'))
 
 
-@bp.route('/selectIns', methods=["GET", "POST"])
+@app.route('/selectIns', methods=["GET", "POST"])
 def get_inspection():
     projectName = session.get("projectName")
     access_token = session.get('access_token')
@@ -361,7 +379,7 @@ def get_inspection():
     return redirect('/update')
 
 
-@bp.route('/update', methods=['GET', 'POST'])
+@app.route('/update', methods=['GET', 'POST'])
 def update_ins():
     if request.method == "POST":
         list_id = session.get('list_id')
@@ -388,7 +406,7 @@ def update_ins():
         return render_template("fin.html")
     return render_template("update.html")
 
-@bp.route('/refreshToken', methods=['POST'])
+@app.route('/refreshToken', methods=['POST'])
 def app_refresh_token():
     access_token = session.get('access_token')
     refresh_token = session.get('refresh_token')
@@ -409,7 +427,7 @@ def app_refresh_token():
     return redirect('user/home')
 
 
-@bp.route('/logout', methods=["POST"])
+@app.route('/logout', methods=["POST"])
 def logout():
     access_token = session.get('access_token')
     data = {
