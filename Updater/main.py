@@ -119,6 +119,7 @@ def get_company_id(access_token):
     response = requests.get(BASE_URL+"/rest/v1.0/companies", headers=headers)
     company_json = response.json()
     session['company_id'] = company_json[0]['id']
+    
     return company_json[0]['id']
 
 """
@@ -197,7 +198,6 @@ def update(result, project_id, list_id, status, headers):
         resp = requests.patch(
             BASE_URL+f'/rest/v1.0/checklist/lists/{list_id}/items/{item_id[target-1]}', data=json_data, headers=headers)
 
-        print(resp.status_code)
 
 def get_me(access_token):
     '''
